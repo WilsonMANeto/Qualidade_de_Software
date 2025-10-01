@@ -2,7 +2,12 @@
   "name": "Flutter Recipe App",
 
   // 1. A IMAGEM DOCKER
-  "image": "cirrusci/flutter:stable",
+"build": {
+  "dockerfile": "Dockerfile",
+  "args": {
+    "USERNAME": "cirrus"
+  }
+},
 
   // 2. CUSTOMIZAÇÃO DO VS CODE
   "customizations": {
