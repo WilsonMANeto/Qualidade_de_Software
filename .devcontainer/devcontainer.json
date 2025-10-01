@@ -1,0 +1,31 @@
+{
+  "name": "Flutter Recipe App",
+
+  // 1. A IMAGEM DOCKER
+  "image": "cirrusci/flutter:stable",
+
+  // 2. CUSTOMIZAÇÃO DO VS CODE
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Dart-Code.flutter",    
+        "Dart-Code.dart-code",    
+        "one-dark.one-dark-pro", 
+        "redhat.vscode-yaml"     
+      ]
+    }
+  },
+
+  // 3. COMANDOS PÓS-CRIAÇÃO
+  "postCreateCommand": "flutter doctor && flutter precache --web",
+
+  // 4. ARGUMENTOS PARA O DOCKER
+  "runArgs": [
+    "--device", "/dev/dri:/dev/dri",
+    "--volume", "/tmp/.X11-unix:/tmp/.X11-unix",
+    "-e", "DISPLAY=${env:DISPLAY}"
+  ],
+
+  // 5. USUÁRIO REMOTO
+  "remoteUser": "cirrus"
+}
