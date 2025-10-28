@@ -1,36 +1,10 @@
 {
-  "name": "Flutter Recipe App",
-
-  // 1. A IMAGEM DOCKER
-"build": {
-  "dockerfile": "Dockerfile",
-  "args": {
-    "USERNAME": "cirrus"
-  }
-},
-
-  // 2. CUSTOMIZAÇÃO DO VS CODE
+  "name": "Flutter DevContainer",
+  "image": "instrumentisto/flutter:3.35.7-androidsdk35-r0",
+  "postCreateCommand": "flutter pub get",
   "customizations": {
     "vscode": {
-      "extensions": [
-        "Dart-Code.flutter",    
-        "Dart-Code.dart-code",    
-        "one-dark.one-dark-pro", 
-        "redhat.vscode-yaml"     
-      ]
+      "extensions": ["dart-code.flutter", "dart-code.dart-code"]
     }
-  },
-
-  // 3. COMANDOS PÓS-CRIAÇÃO
-  "postCreateCommand": "flutter doctor && flutter precache --web",
-
-  // 4. ARGUMENTOS PARA O DOCKER
-  "runArgs": [
-    "--device", "/dev/dri:/dev/dri",
-    "--volume", "/tmp/.X11-unix:/tmp/.X11-unix",
-    "-e", "DISPLAY=${env:DISPLAY}"
-  ],
-
-  // 5. USUÁRIO REMOTO
-  "remoteUser": "cirrus"
+  }
 }
