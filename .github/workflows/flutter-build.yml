@@ -11,24 +11,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Faz checkout do código
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
-      # 2️⃣ Instala o Flutter
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.35.7'  # mesma versão do seu projeto
+          flutter-version: '3.35.7'
 
-      # 3️⃣ Instala as dependências
-      - name: Get dependencies
+      - name: Install dependencies
         run: flutter pub get
+        working-directory: AppReceitas  
 
-      # 4️⃣ Faz a análise de código (opcional, mas recomendado)
-      - name: Analyze project
+      - name: Analyze code
         run: flutter analyze
+        working-directory: AppReceitas  
 
-      # 5️⃣ Tenta construir o app (verifica se o build funciona)
-      - name: Build Flutter app
+      - name: Build APK (debug)
         run: flutter build apk --debug
+        working-directory: AppReceitas  
