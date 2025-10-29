@@ -1,0 +1,13 @@
+version: 2
+updates:
+  # Flutter/Dart
+  - package-ecosystem: "pub"
+    directory: "/"        # Diretório onde está o pubspec.yaml
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 5
+    ignore:
+      - dependency-name: "flutter"
+        versions:
+          - "<3.0.0"  # Exemplo: ignorar versões antigas se quiser
+
