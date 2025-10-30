@@ -18,7 +18,7 @@ jobs:
           docker run --rm \
             -v ${{ github.workspace }}:/src \
             owasp/dependency-check:latest \
-            --project "MeuProjetoFlutter" \
+            --project "AppReceitas" \
             --scan /src \
             --format "HTML" \
             --out /src/dependency-check-report

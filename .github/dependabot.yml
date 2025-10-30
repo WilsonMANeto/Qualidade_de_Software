@@ -2,7 +2,7 @@ version: 2
 updates:
   # Flutter/Dart
   - package-ecosystem: "pub"
-    directory: "/"        # Diretório onde está o pubspec.yaml
+    directory: "/AppReceitas"        
     schedule:
       interval: "daily"
     open-pull-requests-limit: 5
