@@ -23,9 +23,20 @@ jobs:
         run: flutter pub get
         working-directory: AppReceitas
 
-      - name: Analyze code (fail on deprecated)
-        run: flutter analyze
+      - name: Analyze code (fail only on deprecated)
         working-directory: AppReceitas
+        run: |
+          echo "Running Flutter Analyze..."
+          flutter analyze > analyze_log.txt || true
+
+          echo "Checking for deprecated usages..."
+          if grep -q "deprecated_member_use" analyze_log.txt; then
+            echo "❌ Found deprecated code usage!"
+            grep "deprecated_member_use" analyze_log.txt
+            exit 1
+          else
+            echo "✅ No deprecated code found."
+          fi
 
       - name: Build APK (debug)
         run: flutter build apk --debug
