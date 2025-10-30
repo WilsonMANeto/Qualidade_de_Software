@@ -9,3 +9,27 @@ updates:
     directory: "/AppReceitas" # Location of package manifests
     schedule:
       interval: "daily"
+
+  # 2️⃣ Dependências do GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"                  
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(actions):"
+    labels:
+      - "ci"
+      - "dependencies"
+
+  # 3️⃣ Dependências do DevContainer
+  - package-ecosystem: "devcontainers"
+    directory: "/.devcontainer"    
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(devcontainer):"
+    labels:
+      - "devcontainer"
+      - "dependencies"
