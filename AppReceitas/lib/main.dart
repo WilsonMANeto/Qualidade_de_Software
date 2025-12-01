@@ -5,7 +5,7 @@ void main() {
   runApp(AppReceitas());
 }
 
-  class AppReceitas extends StatelessWidget {
+class AppReceitas extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
