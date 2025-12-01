@@ -2,4 +2,12 @@ include: package:flutter_lints/flutter.yaml
 
 analyzer:
   errors:
-    deprecated_member_use: error
+    deprecated_member_use: error  
+    prefer_const_constructors: warning  
+    avoid_print: warning
+
+linter:
+  rules:
+    always_declare_return_types: true
+    avoid_empty_else: true
+    camel_case_types: true 

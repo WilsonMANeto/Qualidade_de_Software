@@ -23,6 +23,12 @@ jobs:
         run: flutter pub get
         working-directory: AppReceitas
 
+      - name: Check code style (dart format)
+        working-directory: AppReceitas
+        run: |
+          echo "🔍 Checking code formatting..."
+          dart format . --set-exit-if-changed --output=none
+
       - name: Analyze code (fail only on deprecated)
         working-directory: AppReceitas
         run: |
