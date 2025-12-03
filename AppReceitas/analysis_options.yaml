@@ -10,4 +10,4 @@ linter:
   rules:
     always_declare_return_types: true
     avoid_empty_else: true
-    camel_case_types: true 
+    camel_case_types: true
