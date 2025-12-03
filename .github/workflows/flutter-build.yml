@@ -29,6 +29,16 @@ jobs:
           echo "🔍 Checking code formatting..."
           dart format . --set-exit-if-changed --output=none
 
+      - name: Detect Code Duplication
+        run: |
+          echo "Installing jscpd..."
+          npm install -g jscpd
+          echo "🔍 Checking for duplicated code..."
+          # Verifica a pasta lib dentro de AppReceitas
+          # threshold 0 = Falha com qualquer duplicação
+          # ignore = Ignora arquivos gerados pelo Flutter (.g.dart)
+          jscpd AppReceitas/lib --min-lines 5 --threshold 0 --ignore "**/*.g.dart" --reporters "console"
+
       - name: Analyze code (fail only on deprecated)
         working-directory: AppReceitas
         run: |
