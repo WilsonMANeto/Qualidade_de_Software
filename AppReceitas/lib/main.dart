@@ -19,18 +19,3 @@ class AppReceitas extends StatelessWidget {
     );
   }
 }
-
-class AppReceitasCopia extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'App de Receitas',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.orange,
-        scaffoldBackgroundColor: Colors.white,
-      ),
-      home: HomeScreen(),
-    );
-  }
-}
