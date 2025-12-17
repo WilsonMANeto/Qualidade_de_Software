@@ -23,6 +23,37 @@ jobs:
         run: flutter pub get
         working-directory: AppReceitas
 
+      # --- INÍCIO DA SEÇÃO UML ---
+      # 1. Instala ferramentas do sistema para gerar imagens (Graphviz e PlantUML)
+      - name: Install System Dependencies (Graphviz & PlantUML)
+        run: sudo apt-get update && sudo apt-get install -y graphviz plantuml
+
+      # 2. Ativa o gerador de diagramas do Dart
+      - name: Install dcdg (Dart Class Diagram Generator)
+        run: dart pub global activate dcdg
+
+      # 3. Gera o arquivo .puml e converte para imagem .png
+      - name: Generate UML Class Diagram
+        working-directory: AppReceitas
+        run: |
+          # Adiciona o dcdg ao PATH temporariamente
+          export PATH="$PATH":"$HOME/.pub-cache/bin"
+          
+          echo "Generating PlantUML file..."
+          dcdg -o domain_classes.puml
+          
+          echo "Converting to PNG image..."
+          plantuml domain_classes.puml
+
+      # 4. Salva a imagem gerada para você baixar no GitHub
+      - name: Upload UML Diagram Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: uml-class-diagram
+          path: AppReceitas/domain_classes.png
+          retention-days: 5
+      # --- FIM DA SEÇÃO UML ---
+
       - name: Check code style (dart format)
         working-directory: AppReceitas
         run: |
