@@ -1,10 +1,11 @@
-name: Flutter Build
+name: Flutter Build & Sonar Analysis
 
 on:
   push:
     branches: [ "*" ]
   pull_request:
     branches: [ "*" ]
+    types: [opened, synchronize, reopened]
 
 jobs:
   build:
@@ -13,7 +14,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
+        with:
+          fetch-depth: 0 
+N
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -23,66 +26,51 @@ jobs:
         run: flutter pub get
         working-directory: AppReceitas
 
-      # --- INÍCIO DA SEÇÃO UML ---
-      # 1. Instala ferramentas do sistema para gerar imagens (Graphviz e PlantUML)
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5 
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} 
+        with:
+          projectBaseDir: AppReceitas
+
       - name: Install System Dependencies (Graphviz & PlantUML)
         run: sudo apt-get update && sudo apt-get install -y graphviz plantuml
 
-      # 2. Ativa o gerador de diagramas do Dart
       - name: Install dcdg (Dart Class Diagram Generator)
         run: dart pub global activate dcdg
 
-      # 3. Gera o arquivo .puml e converte para imagem .png
       - name: Generate UML Class Diagram
         working-directory: AppReceitas
         run: |
-          # Adiciona o dcdg ao PATH temporariamente
           export PATH="$PATH":"$HOME/.pub-cache/bin"
-          
-          echo "Generating PlantUML file..."
           dcdg -o domain_classes.puml
-          
-          echo "Converting to PNG image..."
           plantuml domain_classes.puml
 
-      # 4. Salva a imagem gerada para você baixar no GitHub
       - name: Upload UML Diagram Artifact
         uses: actions/upload-artifact@v4
         with:
           name: uml-class-diagram
           path: AppReceitas/domain_classes.png
           retention-days: 5
-      # --- FIM DA SEÇÃO UML ---
 
       - name: Check code style (dart format)
         working-directory: AppReceitas
-        run: |
-          echo "🔍 Checking code formatting..."
-          dart format . --set-exit-if-changed --output=none
+        run: dart format . --set-exit-if-changed --output=none
 
-      - name: Detect Code Duplication
+      - name: Detect Code Duplication (jscpd)
         run: |
-          echo "Installing jscpd..."
           npm install -g jscpd
-          echo "🔍 Checking for duplicated code..."
-          # Verifica a pasta lib dentro de AppReceitas
-          # threshold 0 = Falha com qualquer duplicação
-          # ignore = Ignora arquivos gerados pelo Flutter (.g.dart)
           jscpd AppReceitas/lib --min-lines 5 --threshold 0 --ignore "**/*.g.dart" --reporters "console"
 
       - name: Analyze code (fail only on deprecated)
         working-directory: AppReceitas
         run: |
-          echo "Running Flutter Analyze..."
           flutter analyze > analyze_log.txt || true
-
-          echo "Checking for deprecated usages..."
           if grep -q "deprecated_member_use" analyze_log.txt; then
             echo "❌ Found deprecated code usage!"
             grep "deprecated_member_use" analyze_log.txt
             exit 1
-          else
-            echo "✅ No deprecated code found."
           fi
 
       - name: Build APK (debug)
