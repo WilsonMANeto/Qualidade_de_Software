@@ -47,7 +47,7 @@ jobs:
 
       # 4. Salva a imagem gerada para você baixar no GitHub
       - name: Upload UML Diagram Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: uml-class-diagram
           path: AppReceitas/domain_classes.png
