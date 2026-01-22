@@ -92,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 class ReceitasListWidget extends StatelessWidget {
   final List<Receita> receitas;
-  
+
   static const double listPadding = 12.0;
 
   const ReceitasListWidget({super.key, required this.receitas});
