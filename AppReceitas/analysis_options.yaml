@@ -1,10 +1,27 @@
 include: package:flutter_lints/flutter.yaml
 
 analyzer:
+  plugins:
+    - dart_code_metrics
+
   errors:
-    deprecated_member_use: error  
-    prefer_const_constructors: warning  
+    deprecated_member_use: error   
+    prefer_const_constructors: warning   
     avoid_print: warning
+
+dart_code_metrics:
+  metrics:
+    cyclomatic-complexity: 20   
+    number-of-parameters: 4      
+    maximum-nesting-level: 5     
+  metrics-exclude:
+    - test/**
+  rules:
+    - avoid-unused-parameters     
+    - avoid-returning-widgets     
+    - no-boolean-literal-compare   
+    - no-magic-number             
+    - prefer-extracting-callbacks  
 
 linter:
   rules:
