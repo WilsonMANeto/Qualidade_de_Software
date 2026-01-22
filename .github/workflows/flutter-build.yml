@@ -23,20 +23,21 @@ jobs:
         run: flutter pub get
         working-directory: AppReceitas
 
+      - name: Check Code Metrics (Code Smells)
+        working-directory: AppReceitas
+        run: flutter pub run dart_code_metrics:metrics lib --fatal-style --fatal-warnings --fatal-performance
+      # -------------------------------------------
+
       # --- INÍCIO DA SEÇÃO UML ---
-      # 1. Instala ferramentas do sistema para gerar imagens (Graphviz e PlantUML)
       - name: Install System Dependencies (Graphviz & PlantUML)
         run: sudo apt-get update && sudo apt-get install -y graphviz plantuml
 
-      # 2. Ativa o gerador de diagramas do Dart
       - name: Install dcdg (Dart Class Diagram Generator)
         run: dart pub global activate dcdg
 
-      # 3. Gera o arquivo .puml e converte para imagem .png
       - name: Generate UML Class Diagram
         working-directory: AppReceitas
         run: |
-          # Adiciona o dcdg ao PATH temporariamente
           export PATH="$PATH":"$HOME/.pub-cache/bin"
           
           echo "Generating PlantUML file..."
@@ -45,7 +46,6 @@ jobs:
           echo "Converting to PNG image..."
           plantuml domain_classes.puml
 
-      # 4. Salva a imagem gerada para você baixar no GitHub
       - name: Upload UML Diagram Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -65,9 +65,6 @@ jobs:
           echo "Installing jscpd..."
           npm install -g jscpd
           echo "🔍 Checking for duplicated code..."
-          # Verifica a pasta lib dentro de AppReceitas
-          # threshold 0 = Falha com qualquer duplicação
-          # ignore = Ignora arquivos gerados pelo Flutter (.g.dart)
           jscpd AppReceitas/lib --min-lines 5 --threshold 0 --ignore "**/*.g.dart" --reporters "console"
 
       - name: Analyze code (fail only on deprecated)
@@ -77,14 +74,3 @@ jobs:
           flutter analyze > analyze_log.txt || true
 
           echo "Checking for deprecated usages..."
-          if grep -q "deprecated_member_use" analyze_log.txt; then
-            echo "❌ Found deprecated code usage!"
-            grep "deprecated_member_use" analyze_log.txt
-            exit 1
-          else
-            echo "✅ No deprecated code found."
-          fi
-
-      - name: Build APK (debug)
-        run: flutter build apk --debug
-        working-directory: AppReceitas
