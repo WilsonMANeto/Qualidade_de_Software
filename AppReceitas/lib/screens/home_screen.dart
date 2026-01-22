@@ -15,10 +15,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // 1. Variável de ESTADO para controlar qual aba está ativa.
   int _selectedIndex = 0;
 
-  // Sua lista de receitas original.
   final List<Receita> receitas = [
     Receita(
       nome: 'Lasanha Bolonhesa',
@@ -48,11 +46,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _telas = [
-      // Tela 0: A sua lista de receitas principal.
-      _buildReceitasListView(),
+      // REFATORADO: Em vez de chamar um método, instanciamos o Widget separado
+      ReceitasListWidget(receitas: receitas),
 
-      // Tela 1: A tela de favoritos, agora recebendo a lista de TODAS as receitas.
-      // Isso é crucial para que ela possa filtrar e mostrar as corretas.
+      // Tela 1: A tela de favoritos
       FavoritosScreen(todasAsReceitas: receitas),
 
       // Tela 2: A tela "Sobre".
@@ -60,14 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
   }
 
-  // Widget separado para a lista, para manter o código organizado.
-  Widget _buildReceitasListView() {
-    return ListView.builder(
-      padding: const EdgeInsets.all(12),
-      itemCount: receitas.length,
-      itemBuilder: (context, index) => ReceitaCard(receita: receitas[index]),
-    );
-  }
+  // O método _buildReceitasListView foi removido daqui e virou a classe abaixo.
 
   // 2. Função que atualiza o estado quando uma aba é tocada.
   void _onItemTapped(int index) {
@@ -96,6 +86,23 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.info), label: 'Sobre'),
         ],
       ),
+    );
+  }
+}
+
+class ReceitasListWidget extends StatelessWidget {
+  final List<Receita> receitas;
+  
+  static const double listPadding = 12.0;
+
+  const ReceitasListWidget({super.key, required this.receitas});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      padding: const EdgeInsets.all(listPadding),
+      itemCount: receitas.length,
+      itemBuilder: (context, index) => ReceitaCard(receita: receitas[index]),
     );
   }
 }

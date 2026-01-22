@@ -16,14 +16,15 @@ class FavoritosScreen extends StatefulWidget {
 class _FavoritosScreenState extends State<FavoritosScreen> {
   List<Receita> _receitasFavoritas = [];
 
+  static const double emptyMessageFontSize = 18.0;
+  static const double listPadding = 12.0;
+
   @override
   void initState() {
     super.initState();
     _carregarFavoritos();
   }
 
-  // Este método é chamado sempre que a aba de favoritos se torna visível.
-  // Isso garante que a lista seja atualizada se o usuário desfavoritar um item.
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -34,7 +35,7 @@ class _FavoritosScreenState extends State<FavoritosScreen> {
     final prefs = await SharedPreferences.getInstance();
     final List<String> favoritosIds = prefs.getStringList('favoritos') ?? [];
 
-    // Filtra a lista de TODAS as receitas, mantendo apenas aquelas cujo nome está na lista de IDs salvos.
+    // Filtra a lista de TODAS as receitas
     final List<Receita> favoritas = widget.todasAsReceitas
         .where((receita) => favoritosIds.contains(receita.nome))
         .toList();
@@ -50,13 +51,16 @@ class _FavoritosScreenState extends State<FavoritosScreen> {
       return Center(
         child: Text(
           'Você ainda não tem receitas favoritas!',
-          style: TextStyle(fontSize: 18, color: Colors.grey),
+          style: TextStyle(
+            fontSize: emptyMessageFontSize, // Constante usada aqui
+            color: Colors.grey,
+          ),
         ),
       );
     }
 
     return ListView.builder(
-      padding: EdgeInsets.all(12),
+      padding: EdgeInsets.all(listPadding), // Constante usada aqui
       itemCount: _receitasFavoritas.length,
       itemBuilder: (context, index) {
         return ReceitaCard(receita: _receitasFavoritas[index]);

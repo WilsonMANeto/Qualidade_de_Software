@@ -17,6 +17,15 @@ class ReceitaDetailScreen extends StatefulWidget {
 class _ReceitaDetailScreenState extends State<ReceitaDetailScreen> {
   bool _isFavorito = false;
 
+  static const double imageHeight = 250.0;
+  static const double pagePadding = 16.0;
+  static const double titleFontSize = 24.0;
+  static const double sectionTitleFontSize = 18.0;
+  static const double bodyFontSize = 16.0;
+  static const double smallSpacing = 4.0;
+  static const double mediumSpacing = 8.0;
+  static const double largeSpacing = 16.0;
+
   @override
   void initState() {
     super.initState();
@@ -52,17 +61,12 @@ class _ReceitaDetailScreenState extends State<ReceitaDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.receita.nome),
-
-        // AQUI ESTÁ O CORAÇÃO! <---
-        // A propriedade 'actions' da AppBar adiciona widgets à direita do título.
         actions: [
           IconButton(
             icon: Icon(
-              // Lógica para mostrar o coração preenchido ou apenas a borda
               _isFavorito ? Icons.favorite : Icons.favorite_border,
               color: Colors.white,
             ),
-            // Função que é chamada ao tocar no ícone
             onPressed: _toggleFavorito,
           ),
         ],
@@ -74,36 +78,38 @@ class _ReceitaDetailScreenState extends State<ReceitaDetailScreen> {
             Image.asset(
               widget.receita.imagem,
               width: double.infinity,
-              height: 250,
+              height: imageHeight, // Constante usada
               fit: BoxFit.cover,
             ),
             Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(pagePadding), // Constante usada
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     widget.receita.nome,
                     style: const TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.bold),
+                        fontSize: titleFontSize, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: mediumSpacing),
                   Row(
                     children: [
                       const Icon(Icons.timer),
-                      const SizedBox(width: 4),
+                      const SizedBox(width: smallSpacing),
                       Text(widget.receita.tempoPreparo),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: largeSpacing),
                   const Text(
                     'Descrição:',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: sectionTitleFontSize,
+                        fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: mediumSpacing),
                   Text(
                     widget.receita.descricao,
-                    style: const TextStyle(fontSize: 16),
+                    style: const TextStyle(fontSize: bodyFontSize),
                   ),
                 ],
               ),
