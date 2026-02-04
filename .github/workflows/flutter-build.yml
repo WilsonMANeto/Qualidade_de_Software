@@ -61,7 +61,7 @@ jobs:
           plantuml domain_classes.puml
 
       - name: Upload UML Diagram Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: uml-class-diagram
           path: AppReceitas/domain_classes.png
