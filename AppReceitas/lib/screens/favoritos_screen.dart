@@ -35,7 +35,6 @@ class _FavoritosScreenState extends State<FavoritosScreen> {
     final prefs = await SharedPreferences.getInstance();
     final List<String> favoritosIds = prefs.getStringList('favoritos') ?? [];
 
-    // Filtra a lista de TODAS as receitas
     final List<Receita> favoritas = widget.todasAsReceitas
         .where((receita) => favoritosIds.contains(receita.nome))
         .toList();
@@ -48,11 +47,11 @@ class _FavoritosScreenState extends State<FavoritosScreen> {
   @override
   Widget build(BuildContext context) {
     if (_receitasFavoritas.isEmpty) {
-      return Center(
+      return const Center(
         child: Text(
           'Você ainda não tem receitas favoritas!',
           style: TextStyle(
-            fontSize: emptyMessageFontSize, // Constante usada aqui
+            fontSize: emptyMessageFontSize,
             color: Colors.grey,
           ),
         ),
@@ -60,7 +59,7 @@ class _FavoritosScreenState extends State<FavoritosScreen> {
     }
 
     return ListView.builder(
-      padding: EdgeInsets.all(listPadding), // Constante usada aqui
+      padding: const EdgeInsets.all(listPadding),
       itemCount: _receitasFavoritas.length,
       itemBuilder: (context, index) {
         return ReceitaCard(receita: _receitasFavoritas[index]);

@@ -13,7 +13,7 @@ class ReceitaCard extends StatelessWidget {
   static const double spacingSmall = 4.0;
   static const double iconSize = 16.0;
 
-  const ReceitaCard({required this.receita});
+  const ReceitaCard({super.key, required this.receita});
 
   void _abrirDetalhes(BuildContext context) {
     Navigator.push(
@@ -29,7 +29,7 @@ class ReceitaCard extends StatelessWidget {
     return GestureDetector(
       onTap: () => _abrirDetalhes(context),
       child: Card(
-        margin: EdgeInsets.symmetric(vertical: cardVerticalMargin),
+        margin: const EdgeInsets.symmetric(vertical: cardVerticalMargin),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(cardBorderRadius),
         ),
@@ -37,7 +37,7 @@ class ReceitaCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.vertical(
+              borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(cardBorderRadius),
               ),
               child: Image.asset(
@@ -48,22 +48,22 @@ class ReceitaCard extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(contentPadding),
+              padding: const EdgeInsets.all(contentPadding),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     receita.nome,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: titleFontSize,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: spacingSmall),
+                  const SizedBox(height: spacingSmall),
                   Row(
                     children: [
-                      Icon(Icons.timer, size: iconSize),
-                      SizedBox(width: spacingSmall),
+                      const Icon(Icons.timer, size: iconSize),
+                      const SizedBox(width: spacingSmall),
                       Text(receita.tempoPreparo),
                     ],
                   ),

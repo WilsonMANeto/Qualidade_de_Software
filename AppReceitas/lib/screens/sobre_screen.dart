@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 class SobreScreen extends StatelessWidget {
+  const SobreScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Text('Informações sobre o App'),
     );
   }
