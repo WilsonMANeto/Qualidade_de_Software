@@ -4,7 +4,7 @@ import '../screens/receita_detail_screen.dart';
 
 class ReceitaCard extends StatelessWidget {
   final Receita receita;
-
+  
   static const double cardVerticalMargin = 8.0;
   static const double cardBorderRadius = 12.0;
   static const double imageHeight = 180.0;
