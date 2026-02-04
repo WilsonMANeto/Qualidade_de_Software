@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
 
 void main() {
-  runApp(AppReceitas());
+  runApp(const AppReceitas());
 }
 
 class AppReceitas extends StatelessWidget {
+  const AppReceitas({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -15,7 +17,7 @@ class AppReceitas extends StatelessWidget {
         primarySwatch: Colors.orange,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: HomeScreen(),
+      home: const HomeScreen(), 
     );
   }
 }
