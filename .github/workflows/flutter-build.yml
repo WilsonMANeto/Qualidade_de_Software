@@ -1,4 +1,4 @@
-name: Flutter Build
+name: Flutter Build & Sonar Analysis
 
 on:
   push:
@@ -8,11 +8,15 @@ on:
 
 jobs:
   build:
+    name: Build, Analyze and Test
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout com fetch-depth: 0 (CRUCIAL PARA O SONAR)
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Desabilita clone raso para análise completa do histórico
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -23,10 +27,20 @@ jobs:
         run: flutter pub get
         working-directory: AppReceitas
 
-      - name: Check Code Metrics (Code Smells)
+      # --- INÍCIO DA SEÇÃO SONAR ---
+      # O Sonar analisa o código fonte. Não é necessário gerar o APK antes,
+      # mas é bom ter as dependências (passo anterior) instaladas.
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v6
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          # GITHUB_TOKEN é opcional na v6, mas ajuda se houver PR decoration
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # --- FIM DA SEÇÃO SONAR ---
+
+      - name: Check Code Metrics (Code Smells - Local)
         working-directory: AppReceitas
         run: flutter pub run dart_code_metrics:metrics lib --fatal-style --fatal-warnings --fatal-performance
-      # -------------------------------------------
 
       # --- INÍCIO DA SEÇÃO UML ---
       - name: Install System Dependencies (Graphviz & PlantUML)
@@ -74,3 +88,14 @@ jobs:
           flutter analyze > analyze_log.txt || true
 
           echo "Checking for deprecated usages..."
+          if grep -q "deprecated_member_use" analyze_log.txt; then
+            echo "❌ Found deprecated code usage!"
+            grep "deprecated_member_use" analyze_log.txt
+            exit 1
+          else
+            echo "✅ No deprecated code found."
+          fi
+
+      - name: Build APK (debug)
+        run: flutter build apk --debug
+        working-directory: AppReceitas
