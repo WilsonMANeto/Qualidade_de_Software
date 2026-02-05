@@ -1,5 +1,3 @@
-// Arquivo: lib/screens/home_screen.dart
-
 import 'package:flutter/material.dart';
 
 import '../models/receita.dart';
@@ -90,8 +88,6 @@ class _HomeScreenState extends State<HomeScreen> {
 class ReceitasListWidget extends StatelessWidget {
   final List<Receita> receitas;
 
-  static const double listPadding = 12.0;
-
   const ReceitasListWidget({
     super.key,
     required this.receitas,
@@ -100,15 +96,14 @@ class ReceitasListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: const EdgeInsets.all(listPadding),
+      padding: const EdgeInsets.all(12),
       itemCount: receitas.length,
       itemBuilder: _buildReceitaItem,
     );
   }
 
-  /// Callback extraído para atender a regra
-  /// prefer-extracting-callbacks (dart_code_metrics)
-  Widget _buildReceitaItem(BuildContext context, int index) {
+  /// Callback extraído + parâmetro ignorado corretamente
+  Widget _buildReceitaItem(BuildContext _, int index) {
     return ReceitaCard(receita: receitas[index]);
   }
 }
