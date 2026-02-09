@@ -31,7 +31,7 @@ jobs:
       # O Sonar analisa o código fonte. Não é necessário gerar o APK antes,
       # mas é bom ter as dependências (passo anterior) instaladas.
       - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v6
+        uses: SonarSource/sonarqube-scan-action@v7
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           # GITHUB_TOKEN é opcional na v6, mas ajuda se houver PR decoration
